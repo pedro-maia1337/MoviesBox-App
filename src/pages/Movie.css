@@ -1,0 +1,29 @@
+.movie-control{
+    max-width: 800px;
+    display: flex;
+    align-items: flex-start;
+    margin: 40px auto;
+}
+
+.movie-control img{
+    width: 30%;
+    border-radius: 5px;
+}
+
+.infos-container{
+    flex: 1;
+    padding: 10px;
+}
+
+.infos-container .tagline{
+    text-transform: uppercase;
+}
+
+.infos-container h1{
+    font-family: "Merriweather", serif;
+}
+
+.infos-container p{
+    color: #A6A6A6;
+    margin-top: 30px;
+}

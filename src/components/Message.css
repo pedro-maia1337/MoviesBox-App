@@ -1,0 +1,15 @@
+.msg{
+    width: 100%;
+    padding: 1em;
+    border: 1px solid #000;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 2em;
+    border-radius: 5px;
+}
+ 
+.msg p{
+    color: #F20505;
+    background-color: #000;
+    border-color: #F5C6CB;
+}
