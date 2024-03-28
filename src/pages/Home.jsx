@@ -1,49 +1,38 @@
 import { useState, useEffect } from "react"
+import useRequest from "../../hooks/useRequest"
 
 import "./MoviesContainer.css"
 import MovieCard from "../components/MovieCard"
 import Loader from "../components/Loader"
-import Message from "../components/Message"
 
 const moviesURL = import.meta.env.VITE_API
 const apiKey = import.meta.env.VITE_API_KEY
 
 const Home = () => {
+  const {getMovies} = useRequest()
   const [movies, setMovies] = useState([])
-  const [message, setMessage] = useState(null)
-
-  const getTopMoviesRated = async (url) => {
-    try {
-      const res = await fetch(url)
-      const data = await res.json()
-      setMovies(data.results)
-    } catch (error) {
-      setMessage('Houve erro com a conexão com o servidor')
-      console.log(error)
-    }
-  }
 
   useEffect(() => {
-    const moviesTopRatedUrl = `${moviesURL}top_rated?${apiKey}`
-    getTopMoviesRated(moviesTopRatedUrl)
+    (async () => {
+      const moviesTopRatedUrl = `${moviesURL}top_rated?${apiKey}`
+      const data = await getMovies(moviesTopRatedUrl)
+      setMovies(data.results)
+    })();
   }, [])
 
-
   return (
-    <div>
-      {message ? <Message msg={message}/> : (
-        <div className="container">
-          <h1>Filmes mais bem avaliados</h1>
-          <div className="movies-container">
-            {movies.length > 0 ? (
-              movies.map((movie) => (
-                <MovieCard movie={movie} key={movie.id}/>
-              ))
-            ) : <Loader/>}
-          </div>
+    <>
+      <div className="container">
+        <h1>Filmes mais bem avaliados</h1>
+        <div className="movies-container">
+          {movies.length > 0 ? (
+            movies.map((movie) => (
+              <MovieCard movie={movie} key={movie.id}/>
+            ))
+          ) : <Loader/>}
         </div>
-      )}  
-    </div>
+      </div>
+    </>    
   )
 }
 

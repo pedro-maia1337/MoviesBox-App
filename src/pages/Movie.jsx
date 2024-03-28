@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
+import useRequest from "../../hooks/useRequest";
 
 import { FaStar } from "react-icons/fa";
 
 import Loader from "../components/Loader";
-import Message from "../components/Message";
+
 
 import "./Movie.css"
 
@@ -12,31 +13,22 @@ const moviesURL = import.meta.env.VITE_API
 const apiKey = import.meta.env.VITE_API_KEY
 
 const Movie = () => {
+  const {getMovies} = useRequest()
   const { id } = useParams();
   const [movie, setMovie] = useState(null)
-  const [message, setMessage] = useState(null)
 
   const imagesURL = import.meta.env.VITE_API_IMG
 
-  const getMovie = async (url) => {
-    try {
-        const res =  await fetch(url)
-        const data = await res.json()
-        setMovie(data)    
-      } catch (error) {
-        setMessage('Houve erro com a conexão com o servidor')
-        console.log(error)
-      }
-  }
-
   useEffect(() => {
-    const movieUrl = `${moviesURL}${id}?${apiKey}`
-    getMovie(movieUrl)
+    (async () => {
+      const movieUrl = `${moviesURL}${id}?${apiKey}`
+      const data = await getMovies(movieUrl)
+      setMovie(data)
+    })();
   }, [])
 
   return (
     <div>
-      {message ? <Message msg={message}/> : (
         <div className="movie-control">
         {movie ? (
           <>
@@ -53,7 +45,6 @@ const Movie = () => {
           </>
         ) : <Loader/>}
       </div>
-      )}
     </div> 
   )
 }
